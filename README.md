@@ -1,6 +1,8 @@
 # Dead Link Checker
 
-Check for dead links and notify about them via Slack
+Check a list of links from an API endpoint for ones that are dead and notify a Slack channel when you find one!
+
+Originally built for monitoring job links on [japan-dev.com](https://japan-dev.com/) :jp:
 
 ### How to run
 
@@ -18,6 +20,8 @@ bundle exec ruby lib/dead_link_checker.rb
 ```
 
 ### Config
+You can specify some configuration via environment variables.
+
 `JOBS_LIST_URL` (string): API endpoint URL that returns links to check as a JSON array.
 
 JSON format:
@@ -41,8 +45,7 @@ JSON format:
 
 If the script finds a dead link, you'll receive a Slack message like this in the channel/slack worspace specified by your supplied webhook:
 
-![image](https://user-images.githubusercontent.com/6726985/91029287-86f5c700-e639-11ea-805f-2062f3f90d21.png)
-
+<img src="https://user-images.githubusercontent.com/6726985/91029287-86f5c700-e639-11ea-805f-2062f3f90d21.png" width="300px"/>
 
 ### Kubernetes Cron Job Config
 
