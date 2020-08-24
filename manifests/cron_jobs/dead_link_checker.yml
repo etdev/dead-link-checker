@@ -1,0 +1,34 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: dead-link-checker
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dead-link-checker
+            image: registry.gitlab.com/etdev/dead-link-checker:latest
+            imagePullPolicy: Always
+            command:
+              - "/bin/sh"
+              - "-c"
+              - "bundle exec ruby lib/dead_link_checker.rb"
+            env:
+            - name: SLACK_WEBHOOK
+              valueFrom:
+                secretKeyRef:
+                  name: {{ your-secret-name }}
+                  key: {{ your-secret-key }}
+            - name: LINK_LIST_URL
+              value: {{ link-list-api-endpoint-in-json }}
+            - name: PRIMARY_WAIT_TIME
+              value: 5
+            - name: ON_FAIL_WAIT_TIME
+              value: 30
+            - name: RETRY_COUNT
+              value: 3
+          restartPolicy: OnFailure
